@@ -34,6 +34,42 @@ const drawSnake = () => {
 
 // @params 
 
-// const drawSquare = (square, type) => {
-    
-// }
+const dramSquare = (square, type) => {
+    const [ row, column ] = square.split('');
+    boardSquares[row][column] = squareTypes[type];
+    const squareElement = document.getElementById(square);
+    squareElement.setAttribute('class', `square ${type}`);
+
+    if(type === 'emprySquare') {
+        emptySquares.push(square);
+    } else {
+        if (emptySquares.indexOf(square) !== -1) {
+            emptySquares.splices(emptySquares.indexOf(square), 1);
+        }
+    }
+}
+
+const moveSnake = () => {
+    const newSquare = String(
+        Number(snake[snake.lenght - 1]) + directions[direction])
+        .padStart(2, '0');
+    const [row, column] = newSquare.split('');
+
+
+    if (newSquare < 0 ||
+        newSquare > boardSize * boradSize ||
+        (direction === 'ArrowRigth' && column == 0) ||
+        (direction === 'ArrowLeft' && column == 9 ||
+        boardSquares[row][column] === squareTypes.snakeSquare) ) {
+        gameOver();
+    } else {
+        snake.push(newSquare);
+        if (boardSquares[row][column] === squareTypes.foodSquare) {
+            addFood();
+        } else {
+            const emptySquare = snake.shift();
+            drawSquare(emptySquare, 'emptySquare');
+        }
+        drawSnake();
+    }
+}

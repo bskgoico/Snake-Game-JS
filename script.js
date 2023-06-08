@@ -128,3 +128,27 @@ const createBoard = () => {
         })
     })
 };
+
+const setGame = () => {
+    snake = ['00', '01', '02', '03'];
+    score = snake.length;
+    direction = 'ArrowRight';
+    boardSquares = Array.from(Array(boardSize), () => new Array(boardSize).fill(squaresTypes.emptySquares));
+    console.log(boardSquares);
+    board.innerHTML = '';
+    emptySquares = [];
+    createBoard();
+;}
+
+const startGame = () => {
+    setGame();
+    gameOverSign.style.display = 'none';
+    startButton.disabled = true;
+    drawSnake();
+    updateScore();
+    createRandomFood();
+    document.addEventListener('keydown', directionEvent);
+    moveInterval = setInterval( () => moveSnake(), gameSpeed);
+};
+
+startButton.addEventListener('click', startGame);
